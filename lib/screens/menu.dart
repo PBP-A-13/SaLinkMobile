@@ -1,169 +1,360 @@
 import 'package:flutter/material.dart';
+import 'package:salink_mobile/theme/salink_colors.dart';
 import 'package:salink_mobile/widgets/left_drawer.dart';
+
 import 'package:salink_mobile/screens/saling_beli/saling_beli_page.dart';
-import 'package:salink_mobile/screens/saling_pinjam/saling_pinjam_page.dart';
-import 'package:salink_mobile/screens/saling_bagi/saling_bagi_page.dart';
 import 'package:salink_mobile/screens/saling_tebeng/saling_tebeng_page.dart';
+import 'package:salink_mobile/screens/saling_bagi/saling_bagi_page.dart';
+import 'package:salink_mobile/screens/saling_pinjam/saling_pinjam_page.dart';
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
 
+  void _navigateTo(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: SaLinkColors.orange,
+
       appBar: AppBar(
-        title: const Text('SaLink Mobile'),
-        backgroundColor: Colors.indigo,
-        foregroundColor: Colors.white,
+        backgroundColor: SaLinkColors.brown,
+        foregroundColor: SaLinkColors.yellow,
+        elevation: 0,
+        title: const Text(
+          'SaLink',
+          style: TextStyle(
+            fontFamily: 'Anton',
+            fontSize: 28,
+            color: SaLinkColors.yellow,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
+
       drawer: const LeftDrawer(),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.indigo.shade600, Colors.indigo.shade400],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Selamat Datang di SaLink! 👋',
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'Platform berbagi & pemanfaatan kembali sumber daya lokal komunitas Universitas Indonesia.',
-                      style: TextStyle(color: Colors.white70, fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 24),
-              const Text(
-                'Layanan Utama',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 12),
-              Card(
-                elevation: 3,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-                color: Colors.indigo.shade50,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SalingBeliPage()),
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(14),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 28,
-                          backgroundColor: Colors.indigo,
-                          child: Icon(Icons.shopping_bag_outlined, color: Colors.white, size: 28),
+
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final screenWidth = constraints.maxWidth;
+
+          final isMobile = screenWidth <= 680;
+          final isTablet = screenWidth > 680 && screenWidth <= 960;
+
+          final crossAxisCount = isMobile ? 1 : (isTablet ? 2 : 4);
+          final horizontalPadding = isMobile ? 20.0 : 24.0;
+          final heroHeight = isMobile ? 350.0 : 420.0;
+
+          final titleSize = (screenWidth * 0.43).clamp(
+            100.0,
+            380.0,
+          );
+
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                // HERO SECTION
+                SizedBox(
+                  height: heroHeight - 65,
+                  width: double.infinity,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Positioned(
+                        left: horizontalPadding,
+                        right: horizontalPadding,
+                        bottom: -65,
+                        child: SizedBox(
+                          width: double.infinity,
+                          height: heroHeight * 0.85,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.bottomCenter,
+                            child: Text(
+                              'SaLink',
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontFamily: 'Anton',
+                                fontSize: titleSize,
+                                height: 1.1,
+                                color: const Color(0xFFFFF6DC),
+                                letterSpacing: -2,
+                              ),
+                            ),
+                          ),
                         ),
-                        SizedBox(width: 16),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                    ],
+                  ),
+                ),
+
+                // MAIN CONTENT PANEL
+                Container(
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: SaLinkColors.cream,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(70),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color(0x33000000),
+                        blurRadius: 15,
+                        offset: Offset(0, -5),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.fromLTRB(
+                    horizontalPadding,
+                    isMobile ? 32 : 44,
+                    horizontalPadding,
+                    60,
+                  ),
+
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxWidth: 1080,
+                      ),
+
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'LAYANAN MAHASISWA',
+                            style: TextStyle(
+                              fontFamily: 'Anton',
+                              fontSize: 28,
+                              color: SaLinkColors.brown,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+
+                          const SizedBox(height: 8),
+
+                          const Text(
+                            'Temukan semua kemudahan aktivitas kampus '
+                            'dalam satu genggaman',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: SaLinkColors.orange,
+                              height: 1.5,
+                            ),
+                          ),
+
+                          const SizedBox(height: 28),
+
+                          // SERVICE CARDS
+                          GridView.count(
+                            crossAxisCount: crossAxisCount,
+                            shrinkWrap: true,
+                            physics:
+                                const NeverScrollableScrollPhysics(),
+                            crossAxisSpacing: 20,
+                            mainAxisSpacing: 20,
+                            mainAxisExtent: 285,
+
                             children: [
-                              Text(
-                                'Saling Beli',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.indigo,
+                              _ServiceCard(
+                                emoji: '🛒',
+                                title: 'SALING BELI',
+                                description:
+                                    'Prelove barang kos, buku kuliah, '
+                                    'dan peralatan elektronik murah '
+                                    'atau hibah gratis sesama mahasiswa UI.',
+                                buttonText: 'JELAJAHI BELI',
+                                onTap: () => _navigateTo(
+                                  context,
+                                  const SalingBeliPage(),
                                 ),
                               ),
-                              SizedBox(height: 4),
-                              Text(
-                                'Katalog barang preloved dan hibah gratis mahasiswa UI.',
-                                style: TextStyle(color: Colors.black87, fontSize: 13),
+
+                              _ServiceCard(
+                                emoji: '🛵',
+                                title: 'SALING NEBENG',
+                                description:
+                                    'Cari atau tawarkan tebengan hemat '
+                                    '& ramah lingkungan di sekeliling '
+                                    'area kampus Depok & Salemba.',
+                                buttonText: 'CARI TEBENGAN',
+                                onTap: () => _navigateTo(
+                                  context,
+                                  const SalingTebengPage(),
+                                ),
+                              ),
+
+                              _ServiceCard(
+                                emoji: '🍱',
+                                title: 'SALING BAGI',
+                                description:
+                                    'Berbagi makanan berlebih atau '
+                                    'peroleh hidangan berkah dari '
+                                    'kantin dan sesama rekan mahasiswa.',
+                                buttonText: 'LIHAT MAKANAN',
+                                onTap: () => _navigateTo(
+                                  context,
+                                  const SalingBagiPage(),
+                                ),
+                              ),
+
+                              _ServiceCard(
+                                emoji: '🤝',
+                                title: 'SALING PINJAM',
+                                description:
+                                    'Pinjam jas lab, kalkulator saintifik, '
+                                    'toga, perkakas, hingga proyektor '
+                                    'untuk kegiatan akademik.',
+                                buttonText: 'PINJAM BARANG',
+                                onTap: () => _navigateTo(
+                                  context,
+                                  const SalingPinjamPage(),
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Icon(Icons.chevron_right, color: Colors.indigo),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+// SERVICE CARD WIDGET
+class _ServiceCard extends StatelessWidget {
+  final String emoji;
+  final String title;
+  final String description;
+  final String buttonText;
+  final VoidCallback onTap;
+
+  const _ServiceCard({
+    required this.emoji,
+    required this.title,
+    required this.description,
+    required this.buttonText,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: SaLinkColors.yellow,
+      borderRadius: BorderRadius.circular(20),
+      clipBehavior: Clip.antiAlias,
+
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+
+          child: Column(
+            children: [
+              // ICON AREA
+              SizedBox(
+                height: 90,
+                width: double.infinity,
+                child: Center(
+                  child: Text(
+                    emoji,
+                    style: const TextStyle(fontSize: 40),
+                  ),
+                ),
               ),
-              const SizedBox(height: 12),
-              const Text(
-                'Modul Anggota Lain',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: Colors.black54),
-              ),
-              const SizedBox(height: 8),
-              _buildPlaceholderCard(
-                context,
-                'Saling Pinjam',
-                'Akses sementara terhadap barang perkuliahan.',
-                Icons.handyman_outlined,
-                Colors.teal,
-                () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SalingPinjamPage())),
-              ),
-              _buildPlaceholderCard(
-                context,
-                'Saling Bagi',
-                'Redistribusi makanan berlebih layak konsumsi.',
-                Icons.fastfood_outlined,
-                Colors.orange,
-                () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SalingBagiPage())),
-              ),
-              _buildPlaceholderCard(
-                context,
-                'Saling Tebeng',
-                'Berbagi perjalanan motor/mobil rute kampus UI.',
-                Icons.directions_car_outlined,
-                Colors.deepPurple,
-                () => Navigator.push(context, MaterialPageRoute(builder: (context) => const SalingTebengPage())),
+
+              // CARD CONTENT
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.fromLTRB(
+                    14,
+                    14,
+                    14,
+                    12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF6DC),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontFamily: 'Anton',
+                          fontSize: 19,
+                          color: SaLinkColors.brown,
+                        ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Expanded(
+                        child: Text(
+                          description,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            height: 1.45,
+                            color: SaLinkColors.orange,
+                          ),
+                          maxLines: 4,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+
+                      // ACTION BUTTON
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 13,
+                          vertical: 7,
+                        ),
+                        decoration: BoxDecoration(
+                          color: SaLinkColors.brown,
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              buttonText,
+                              style: const TextStyle(
+                                fontFamily: 'Anton',
+                                fontSize: 12,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            const Icon(
+                              Icons.arrow_forward,
+                              size: 13,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildPlaceholderCard(
-    BuildContext context,
-    String title,
-    String subtitle,
-    IconData icon,
-    MaterialColor color,
-    VoidCallback onTap,
-  ) {
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: ListTile(
-        leading: Icon(icon, color: color),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-        subtitle: Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.black54)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
-        onTap: onTap,
       ),
     );
   }
