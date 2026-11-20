@@ -66,13 +66,18 @@ class PinjamCalendarWidget extends StatelessWidget {
                   onDateSelected(prev);
                 },
               ),
-              Text(
-                'JADWAL PINJAM · ${_months[month - 1].toUpperCase()} $year',
-                style: const TextStyle(
-                  fontFamily: 'Anton',
-                  fontSize: 16,
-                  color: darkBrown,
-                  letterSpacing: 0.5,
+              Expanded(
+                child: Text(
+                  '${_months[month - 1].toUpperCase()} $year',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'Anton',
+                    fontSize: 16,
+                    color: darkBrown,
+                    letterSpacing: 0.5,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
               IconButton(

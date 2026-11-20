@@ -162,31 +162,38 @@ class _SalingPinjamPageState extends State<SalingPinjamPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'HARI INI, ${_formatDateHeader(DateTime.now())}',
-                      style: const TextStyle(
-                        fontFamily: 'Anton',
-                        fontSize: 18,
-                        color: darkBrown,
-                        letterSpacing: 0.5,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'HARI INI, ${_formatDateHeader(DateTime.now())}',
+                        style: const TextStyle(
+                          fontFamily: 'Anton',
+                          fontSize: 16,
+                          color: darkBrown,
+                          letterSpacing: 0.5,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    const Text(
-                      'Pinjam & pinjamkan barang perkuliahan UI',
-                      style: TextStyle(fontSize: 12, color: Color(0xFF8C5A1F)),
-                    ),
-                  ],
+                      const Text(
+                        'Pinjam & pinjamkan barang perkuliahan UI',
+                        style: TextStyle(fontSize: 12, color: Color(0xFF8C5A1F)),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
                 ),
+                const SizedBox(width: 8),
                 ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: marigoldYellow,
                     foregroundColor: darkBrown,
                     side: const BorderSide(color: darkBrown, width: 2),
                     elevation: 0,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(999),
                     ),
@@ -238,13 +245,17 @@ class _SalingPinjamPageState extends State<SalingPinjamPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'PINJAMAN AKTIF SAYA',
-                        style: TextStyle(
-                          fontFamily: 'Anton',
-                          fontSize: 15,
-                          color: darkBrown,
-                          letterSpacing: 0.5,
+                      const Expanded(
+                        child: Text(
+                          'PINJAMAN AKTIF SAYA',
+                          style: TextStyle(
+                            fontFamily: 'Anton',
+                            fontSize: 14,
+                            color: darkBrown,
+                            letterSpacing: 0.5,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       Container(
@@ -254,7 +265,7 @@ class _SalingPinjamPageState extends State<SalingPinjamPage> {
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: Text(
-                          '${_activeSlots.length}/3 Slot Digunakan',
+                          '${_activeSlots.length}/3 Digunakan',
                           style: const TextStyle(
                             fontSize: 10,
                             color: Colors.white,
