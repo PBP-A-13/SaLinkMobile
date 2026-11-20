@@ -68,11 +68,12 @@ Aplikasi ini dibangun menggunakan **Flutter** untuk Proyek Akhir Semester **Pemr
 
 Data tidak disimpan statis di aplikasi, melainkan diambil dari backend Django yang di-deploy di PWS.
 
-1. **Endpoint REST API (Django):** situs web menyediakan endpoint JSON melalui DRF, contoh `https://muhammad-hasbi52-salink.pws.cs.ui.ac.id/saling-beli/json/`.
-2. **Pemanggilan asinkron (Flutter):** aplikasi mengirim request HTTP (`http.get` / `CookieRequest`) secara asinkron.
-3. **Parsing JSON ke model Dart:** respons di-decode dengan `dart:convert` lalu dipetakan ke objek model (misalnya `ItemListing.fromJson`).
-4. **Penyajian data di UI:** data ditampilkan secara reaktif dengan `FutureBuilder`, `ListView.builder`, dan `Card`.
-5. **Kirim data (mutasi):** formulir mengirim payload JSON melalui HTTP POST, dengan autentikasi sesi berbasis cookie, ke endpoint Django terkait.
+1. **Endpoint REST API (Django):** situs web menyediakan endpoint JSON melalui Django REST Framework (DRF), contoh `https://muhammad-hasbi52-salink.pws.cs.ui.ac.id/saling-beli/json/`.
+2. **Pemanggilan asinkron (Flutter):** aplikasi mengirim request HTTP (`http.get`, `http.post`) secara asinkron dengan header JSON dan Authorization Token.
+3. **Autentikasi Berbasis Token:** pengguna melakukan login melalui endpoint token, kemudian token disimpan di penyimpanan lokal aplikasi (`SharedPreferences`) dan dikirimkan pada header setiap request yang membutuhkan autentikasi: `Authorization: Token <token>`.
+4. **Parsing JSON ke model Dart:** respons di-decode dengan `dart:convert` lalu dipetakan ke objek model (misalnya `ItemListing.fromJson` atau `BorrowItem`).
+5. **Penyajian data di UI:** data ditampilkan secara reaktif dengan `FutureBuilder`, `ListView.builder`, dan `GridView.builder`.
+6. **Kirim data (mutasi):** formulir mengirim payload JSON melalui HTTP POST ke endpoint Django terkait.
 
 ### Daftar Endpoint
 
@@ -80,20 +81,24 @@ Data tidak disimpan statis di aplikasi, melainkan diambil dari backend Django ya
 | --- | --- | --- | --- |
 | Saling Beli | GET | `/saling-beli/json/` | Mengambil seluruh katalog barang aktif |
 | Saling Beli | POST | `/saling-beli/create/` | Menambah barang baru via REST API |
-| Saling Pinjam | GET | `/saling-pinjam/` | Mengambil daftar barang yang dapat dipinjam |
+| Saling Beli | GET | `/saling-beli/<id>/` | Mengambil data detail satu barang preloved |
+| Saling Pinjam | GET | `/saling-pinjam/json/` | Mengambil daftar barang yang dapat dipinjam |
 | Saling Pinjam | POST | `/saling-pinjam/create/` | Mendaftarkan barang pinjaman baru |
-| Saling Bagi | GET | `/saling-bagi/` | Mengambil daftar makanan berlebih yang tersedia |
+| Saling Pinjam | POST | `/saling-pinjam/<id>/request/` | Mengajukan peminjaman barang ke pemilik |
+| Saling Bagi | GET | `/saling-bagi/json/` | Mengambil daftar makanan berlebih yang tersedia |
 | Saling Bagi | POST | `/saling-bagi/tambah/` | Menambahkan makanan berlebih yang dibagikan |
-| Saling Nebeng | GET | `/saling-nebeng/` | Mengambil daftar jadwal tebengan aktif |
+| Saling Nebeng | GET | `/saling-nebeng/json/` | Mengambil daftar jadwal tebengan aktif |
 | Saling Nebeng | POST | `/saling-nebeng/nebeng/tawarkan/` | Mempublikasikan jadwal tebengan baru |
-| Autentikasi | POST | `/akun/login/` | Autentikasi login pengguna dan inisialisasi sesi |
-| Autentikasi | POST | `/akun/register/` | Pendaftaran akun pengguna baru |
+| Autentikasi | POST | `/api/v1/auth/login/` | Autentikasi login pengguna dan penerbitan Token |
+| Autentikasi | POST | `/api/v1/auth/register/` | Pendaftaran akun pengguna baru via REST API |
+| Autentikasi | GET | `/api/v1/auth/profile/` | Mengambil data profil pengguna yang sedang login |
+| Autentikasi | POST | `/api/v1/auth/logout/` | Menghapus token autentikasi di server |
 
 ---
 
 ## 6. Tautan Desain & Deployment
 
-- **Desain Figma:** [SaLink UI/UX Wireframe](#)
+- **Desain Figma:** [SaLink UI/UX Wireframe](https://www.figma.com/design/mLX7a6qFC62AiaaPumui8N/SaLink)
 - **APK (GitHub Release):** *(ditambahkan setelah rilis)*
 - **APK (Bitrise):** *(ditambahkan setelah rilis)*
 - **Video promosi (bonus):** *(opsional)*
