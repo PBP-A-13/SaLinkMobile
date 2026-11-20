@@ -41,8 +41,10 @@ Aplikasi ini dibangun menggunakan **Flutter** untuk Proyek Akhir Semester **Pemr
 - Formulir untuk menawarkan tebengan atau bergabung ke jadwal tebengan.
 
 ### MUHAMMAD HASBI ASSIDDIQ: Saling Bagi / Makanan Berlebih (`saling_bagi`)
-- Etalase makanan berlebih yang dibagikan oleh mahasiswa.
-- Formulir pengajuan janji temu pengambilan makanan.
+- Etalase makanan berlebih dengan fitur pencarian, filter 10 lokasi kantin UI, dan pengurutan (terbaru, porsi terbanyak, segera kedaluwarsa).
+- Lembar detail makanan (*bottom sheet*) beserta pengajuan janji temu pengambilan makanan.
+- Formulir bagikan makanan baru dengan validasi input, opsi lokasi lainnya, dan pemilihan batas layak konsumsi.
+- Integrasi endpoint DRF `/api/saling-bagi/makanan/` dan `/api/saling-bagi/janji-temu/`.
 
 ### BALQIS RAIHANA: Saling Beli / Preloved & Hibah (`saling_beli`)
 - Daftar katalog barang bekas dan hibah melalui HTTP request ke endpoint DRF `/saling-beli/json/`.
@@ -85,8 +87,10 @@ Data tidak disimpan statis di aplikasi, melainkan diambil dari backend Django ya
 | Saling Pinjam | GET | `/saling-pinjam/json/` | Mengambil daftar barang yang dapat dipinjam |
 | Saling Pinjam | POST | `/saling-pinjam/create/` | Mendaftarkan barang pinjaman baru |
 | Saling Pinjam | POST | `/saling-pinjam/<id>/request/` | Mengajukan peminjaman barang ke pemilik |
-| Saling Bagi | GET | `/saling-bagi/json/` | Mengambil daftar makanan berlebih yang tersedia |
-| Saling Bagi | POST | `/saling-bagi/tambah/` | Menambahkan makanan berlebih yang dibagikan |
+| Saling Bagi | GET | `/api/saling-bagi/makanan/` | Mengambil daftar makanan berlebih yang tersedia (mendukung filter `?lokasi=` & `?search=`) |
+| Saling Bagi | POST | `/api/saling-bagi/makanan/` | Menambahkan makanan berlebih yang dibagikan via REST API |
+| Saling Bagi | GET | `/api/saling-bagi/janji-temu/` | Mengambil daftar janji temu pengambilan makanan milik pengguna |
+| Saling Bagi | POST | `/api/saling-bagi/janji-temu/` | Mengajukan janji temu pengambilan makanan |
 | Saling Nebeng | GET | `/saling-nebeng/json/` | Mengambil daftar jadwal tebengan aktif |
 | Saling Nebeng | POST | `/saling-nebeng/nebeng/tawarkan/` | Mempublikasikan jadwal tebengan baru |
 | Autentikasi | POST | `/api/v1/auth/login/` | Autentikasi login pengguna dan penerbitan Token |
