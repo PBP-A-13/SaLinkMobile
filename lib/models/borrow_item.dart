@@ -144,14 +144,17 @@ class ActiveBorrowSlot {
   final String returnStatusDisplay;
   final bool canCancel;
 
-  const ActiveBorrowSlot({
+  ActiveBorrowSlot({
     required this.id,
-    required this.item,
-    required this.borrowerUsername,
+    BorrowRequestItem? item,
+    String? itemName,
+    String? pickupLocation,
+    String? imageUrl,
+    this.borrowerUsername = '',
     required this.startDate,
     required this.endDate,
     this.actualReturnDate,
-    required this.notes,
+    this.notes = '',
     required this.status,
     this.ownerHandoverConfirmed = false,
     this.borrowerHandoverConfirmed = false,
@@ -162,7 +165,21 @@ class ActiveBorrowSlot {
     this.handoverStatusDisplay = '',
     this.returnStatusDisplay = '',
     this.canCancel = false,
-  });
+  }) : item = item ??
+            BorrowRequestItem(
+              id: id,
+              name: itemName ?? '',
+              pickupLocation: pickupLocation ?? '',
+              imageUrl: imageUrl,
+              category: 'OTHER',
+              status: 'AVAILABLE',
+              ownerUsername: '',
+            );
+
+  // Backward compatibility getters
+  String get itemName => item.name;
+  String? get imageUrl => item.imageUrl;
+  String get pickupLocation => item.pickupLocation;
 
   factory ActiveBorrowSlot.fromJson(Map<String, dynamic> json) {
     return ActiveBorrowSlot(

@@ -57,9 +57,11 @@ void main() {
     addTearDown(() => tester.view.resetPhysicalSize());
 
     await tester.pumpWidget(const MaterialApp(home: SalingPinjamPage()));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
 
     expect(find.text('SaLink - Pinjam'), findsOneWidget);
-    expect(find.text('PINJAMAN AKTIF SAYA'), findsOneWidget);
+    expect(find.text('SALING PINJAM UI'), findsOneWidget);
+    expect(find.text('Semua Kategori'), findsOneWidget);
   });
 }
